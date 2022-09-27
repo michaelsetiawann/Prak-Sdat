@@ -1,0 +1,153 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package bonusPrakweek10;
+
+import java.util.Scanner;
+
+/**
+ *
+ * @author Michael
+// */
+class Node {
+
+    int info;
+    Node next;
+    Node prev;
+
+    public Node(int info) {
+        this.info = info;
+        this.next = null;
+    }
+}
+
+public class BS_A_1121047_MichaelSetiawan {
+
+    static Scanner scan = new Scanner(System.in);
+    static Node head = null;
+    static Node tail = null;
+
+    public static void sorted() {
+        //procedure ini memakai sorted 
+        System.out.print("masukan angka: ");
+        int info = scan.nextInt();
+        Node newNode = new Node(info);
+        newNode.info = info;
+
+        if (head == null) {
+            tail = newNode;
+            newNode.next = head;
+            head = newNode;
+        } else if (info >= tail.info) {
+            tail.next = newNode;
+            newNode.prev = tail;
+            tail = newNode;
+        } else if (info <= head.info) {
+            head.prev = newNode;
+            newNode.next = head;
+            head = newNode;
+        } else {
+            Node current = head;
+            while (current.next != null) {
+                if (current.next.info >= newNode.info) {
+                    Node temp = current.next;
+                    current.next = newNode;
+                    newNode.prev = current;
+                    current.next = temp;
+                    temp.prev = current.next;
+                    break;
+                } else {
+                    current = current.next;
+                }
+            }
+        }
+    }
+
+    public static void displayForward() {
+        if (head == null) {
+            System.out.println("data kosong!");
+        } else {
+            Node current = head;
+            while (current != null) {
+                System.out.println(current.info);
+                current = current.next;
+            }
+        }
+    }
+
+    public static void rangeDuplikasi() {
+        //prosedure ini untuk melakukan pengecekan yang ada di linkedlist jika memenuhi syarat kondisi maka akan terinsert dan di print
+        System.out.print("masukan angka awal: ");
+        int awal = scan.nextInt();
+        System.out.print("masukan angka akhir: ");
+        int akhir = scan.nextInt();
+        if (head == null) {
+            System.out.println("data kosong!");
+        } else {
+            Node temp = head;
+            while (temp != null) {
+                if (temp.info >= awal && temp.info <= akhir) {
+                    sorted();
+                }
+                temp = temp.next;
+            }
+        }
+        displayForward();
+    }
+
+    public static void rangeDelete() {
+        //prosedure ini untuk melakukan pengecekan data yang ada di linkedlist dan menghapus data jika syarat kondisi sesuai
+        System.out.print("masukan angka awal: ");
+        int awal = scan.nextInt();
+        System.out.print("masukan angka akhir: ");
+        int akhir = scan.nextInt();
+        if (head == null) {
+            System.out.println("data kosong!");
+        } else {
+            Node current = head;
+            while (current != null) {
+                if (current.info >= awal && current.info <= akhir) {
+                    Node temp = current.next;
+                    current.next.next.prev = temp;
+                    temp.next = current.next.next;
+                }
+                current = current.next;
+            }
+        }
+        displayForward();
+    }
+
+    public static void main(String[] args) {
+        int menu = 0;
+        while (menu != 5) {
+            System.out.print("1. insert\n"
+                    + "2. print LL\n"
+                    + "3. range duplikasi\n"
+                    + "4. range delete\n"
+                    + "5. exit\n"
+                    + "pilih menu: ");
+            menu = scan.nextInt();
+            switch (menu) {
+                case 1:
+                    sorted();
+                    break;
+                case 2:
+                    displayForward();
+                    break;
+                case 3:
+                    rangeDuplikasi();
+                    break;
+                case 4:
+                    rangeDelete();
+                    break;
+                case 5:
+                    System.out.println("program selesai!");
+                    break;
+                default:
+                    System.out.println("salah input!");
+            }
+        }
+    }
+}
